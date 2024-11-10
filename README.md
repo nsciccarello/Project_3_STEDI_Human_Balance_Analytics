@@ -112,30 +112,35 @@ The Curated Zone contains the final datasets that combine various sources and ar
 ## Implementation
 <details>
 <summary>
-Landing Zone
+1. Data Ingestion
 </summary>
 
-> In the Landing Zone I stored the customer, accelerometer and step trainer raw data in AWS S3 bucket. 
+### Description:
 
-Using The AWS glue data catalog, I created a glue tables so that I can query the data using AWS athena.
+Data ingestion involves loading the raw data from S3 into AWS Glue. Each dataset (customer, accelerometer, and step trainer) is loaded into the Landing Zone and prepared for transformation.
 
-1- Customer Landing Table:
+### Steps:
 
-![alt text](Screenshots/customer_landing.png)
+1. Created Glue jobs to load data from S3 into the Landing Zone.
+2. Verified row counts to ensure data was successfully ingested.
 
-2- Accelerometer Landing Table: 
+### Results:
 
-![alt text](Screenshots/accelerometer_landing.png)
+These Athena queries confirm row counts for the raw datasets:
 
-3- Step Trainer Landing Table: 
+* ***Accelerometer Landing Table Count:*** 81,273 rows
+![alt text](data_screenshots/accelerometer_landing.png)
 
-![alt text](Screenshots/step_trainer_landing.png)
+* ***Customer Landing Table Count:*** 956 rows
+![alt text](data_screenshots/customer_landing.png)
 
+* ***Step Trainer Landing Table Count:*** 28,680 rows
+![alt text](data_screenshots/step_trainer_landing.png)
 </details>
 
 <details>
 <summary>
-Trusted Zone
+2. Transformation and Trusted Zone Creation
 </summary>
 
 > In the Trusted Zone, I created AWS Glue jobs to make transofrmations on the raw data in the landing zones.
@@ -155,7 +160,22 @@ The customer_trusted table was queried in Athena to show that it only contains c
 
 <details>
 <summary>
-Curated Zone
+3. Joining and Curated Zone Creation
+</summary>
+
+> In the Curated Zone I created AWS Glue jobs to make further transformations, to meet the specific needs of a particular analysis.
+
+**Glue job scripts**
+
+[customer_trusted_to_curated.py](customer_trusted_to_curated.py) - This script transfers customer data from the 'trusted' to 'curated' zones. Using a join on customer_trusted and accelerometer_landing, It filters for customers with Accelerometer readings and have agreed to share data with researchers.
+
+[Trainer_trusted_to_curated.py](Trainer_trusted_to_curated.py): This script is used to build aggregated table that has each of the Step Trainer Readings, and the associated accelerometer reading data for the same timestamp, but only for customers who have agreed to share their data.
+
+</details>
+
+<details>
+<summary>
+4. Final Validation and Verification
 </summary>
 
 > In the Curated Zone I created AWS Glue jobs to make further transformations, to meet the specific needs of a particular analysis.

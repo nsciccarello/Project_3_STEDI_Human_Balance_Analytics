@@ -163,6 +163,9 @@ These Athena query results confirm counts for the Trusted datasets:
 * **Customer Trusted Table Count:** 482 rows
 ![alt text](data_screenshots/customer_trusted.png)
 
+* **Customer Trusted Null Check:** 0 rows
+![alt text](data_screenshots/customer_trusted_shareWithResearchAsOfDate_check)
+
 * **Step Trainer Trusted Table Count:** 14,460 rows
 ![alt text](data_screenshots/step_trainer_trusted.png)
 
